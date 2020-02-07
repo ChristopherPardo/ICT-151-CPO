@@ -1,0 +1,13 @@
+<?php
+/*
+  Author : Christopher Pardo
+  Project : 
+  Date : 07.02.2020
+*/
+
+$user = "toto";
+$pass = "totopass";
+$dbhost = "localhost";
+$dbname = "toto";
+
+?>
