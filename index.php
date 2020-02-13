@@ -5,11 +5,11 @@
  * Date : 06.02.2020
  */
 
-require_once ".const.php";
+require ".const.php";
 
 function getAllItems($table)
 {
-
+    require ".const.php";
     try {
         $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
         $query = 'SELECT * FROM '.$table;
@@ -26,7 +26,7 @@ function getAllItems($table)
 
 function getAnItem($table, $id)
 {
-
+    require ".const.php";
     try {
         $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
         $query = 'SELECT * FROM '.$table.' WHERE id = '.$id;
@@ -45,8 +45,8 @@ function getFilmMakerByName ($name)
 {
     require ".const.php";
     try {
-        $dbh = new PDO('mysql:host=' . $dbhost . ';dbname=' . $dbname, $user, $pass);
-        $query = "SELECT * FROM filmmakers WHERE name='$name'";
+        $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
+        $query = "SELECT * FROM filmmakers WHERE lastname ='$name'";
         $statement = $dbh->prepare($query);//prepare query
         $statement->execute();//execute query
         $queryResult = $statement->fetch();//prepare result for client
@@ -56,6 +56,24 @@ function getFilmMakerByName ($name)
         print "Error!: " . $e->getMessage() . "<br/>";
         return null;
     }
+}
+
+function updateFilmMaker($filmMaker)
+{
+    require ".const.php";
+    try {
+        $dbh = new PDO('mysql:host=' . $dbhost . ';dbname=' . $dbname, $user, $pass);
+        $query = "UPDATE filmMakers SET lastname = '".$filmMaker["lastname"]."', firstname = '".$filmMaker["firstname"]."', birthname = '".$filmMaker["birthname"]."', nationality = '".$filmMaker["nationality"]."' WHERE id = ".$filmMaker['id'];
+        $statement = $dbh->prepare($query);//prepare query
+        $statement->execute();//execute query
+        $queryResult = $statement->fetch();//prepare result for client
+        $dbh = null;
+        return $queryResult;
+    } catch (PDOException $e){
+        print "Error!: " . $e->getMessage() . "<br/>";
+        return null;
+    }
+
 }
 
 ?>
