@@ -5,13 +5,15 @@
  * Date : 06.02.2020
  */
 
-require ".const.php";
+function getPDO(){
+    require ".const.php";
+    return new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
+}
 
 function getAllItems($table)
 {
-    require ".const.php";
     try {
-        $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
+        $dbh = getPDO();
         $query = 'SELECT * FROM '.$table;
         $statment = $dbh->prepare($query); //Prepare query
         $statment->execute(); //Execute query
@@ -26,9 +28,8 @@ function getAllItems($table)
 
 function getAnItem($table, $id)
 {
-    require ".const.php";
     try {
-        $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
+        $dbh = getPDO();
         $query = 'SELECT * FROM '.$table.' WHERE id = '.$id;
         $statment = $dbh->prepare($query); //Prepare query
         $statment->execute(); //Execute query
@@ -43,13 +44,12 @@ function getAnItem($table, $id)
 
 function getFilmMakerByName ($name)
 {
-    require ".const.php";
     try {
-        $dbh = new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
-        $query = "SELECT * FROM filmmakers WHERE lastname ='$name'";
+        $dbh = getPDO();
+        $query = "SELECT * FROM filmmakers WHERE lastname = '$name'";
         $statement = $dbh->prepare($query);//prepare query
         $statement->execute();//execute query
-        $queryResult = $statement->fetch();//prepare result for client
+        $queryResult = $statement->fetch(PDO::FETCH_ASSOC);//prepare result for client
         $dbh = null;
         return $queryResult;
     } catch (PDOException $e) {
@@ -60,12 +60,17 @@ function getFilmMakerByName ($name)
 
 function updateFilmMaker($filmMaker)
 {
-    require ".const.php";
     try {
-        $dbh = new PDO('mysql:host=' . $dbhost . ';dbname=' . $dbname, $user, $pass);
-        $query = "UPDATE filmMakers SET lastname = '".$filmMaker["lastname"]."', firstname = '".$filmMaker["firstname"]."', birthname = '".$filmMaker["birthname"]."', nationality = '".$filmMaker["nationality"]."' WHERE id = ".$filmMaker['id'];
+        $dbh = getPDO();
+        $query = "UPDATE filmMakers SET
+                    lastname=:lastname,
+                    firstname=:firstname,
+                    birthname=:birthname,
+                    nationality=:nationality,
+                    filmmakersnumber=:filmmakersnumber
+                    WHERE id=:id";
         $statement = $dbh->prepare($query);//prepare query
-        $statement->execute();//execute query
+        $statement->execute($filmMaker);//execute query
         $queryResult = $statement->fetch();//prepare result for client
         $dbh = null;
         return $queryResult;

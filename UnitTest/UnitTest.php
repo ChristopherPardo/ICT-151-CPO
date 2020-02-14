@@ -11,13 +11,41 @@ require_once "../.const.php";
 $cmd = "mysql -u $user -p$pass < ../Restore-MCU-PO-Final.sql";
 exec($cmd);
 
-// Test unitaire de la fonction getAllItems
-/*$items = getAllItems("heroes");
-var_dump($items);*/
 
-// Test unitaire de la fonction getAItem
-/*$items = getAnItem("filmmakers", "4");
-echo "Cette acteur s'appelle ".$items['firstname']." ".$items['lastname'];*/
+echo "Test unitaire de la fonction getAllItems : ";
+$items = getAllItems("filmmakers");
+if (count($items) == 4)
+{
+    echo 'OK !!!';
+}
+else
+{
+    echo 'BUG !!!';
+}
+echo "\n";
+echo "Test unitaire de la fonction getItem : ";
+$item = getAnItem("filmmakers",3);
+if ($item['lastname'] == 'Chamblon')
+{
+    echo 'OK !!!';
+}
+else
+{
+    echo 'BUG !!!';
+}
+echo "\n";
+
+echo "Test unitaire de la fonction getFilmMakerName : ";
+$item = getFilmMakerByName('Chamblon');
+if ($item['id'] == 3)
+{
+    echo 'OK !!!';
+}
+else
+{
+    echo '### BUG ###';
+}
+echo "\n";
 
 echo "Test unitaire de la fonction updateFilmMaker : ";
 $item = getFilmMakerByName('Chamblon');
@@ -25,7 +53,7 @@ $id = $item['id']; // se souvenir de l'id pour comparer
 $item['firstname'] = 'Gérard';
 $item['lastname'] = 'Menfain';
 updateFilmMaker($item);
-$readback = getAnItem("filmmakers", $id);
+$readback = getAnItem("filmmakers",$id);
 if (($readback['firstname'] == 'Gérard') && ($readback['lastname'] == 'Menfain'))
 {
     echo 'OK !!!';
