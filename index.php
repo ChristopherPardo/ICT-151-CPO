@@ -31,6 +31,7 @@ function getAnItem($table, $id)
 {
     try {
         $dbh = getPDO();
+        $query = 'SELECT * FROM ' . $table . ' WHERE id = ' . $id;
         $statment = $dbh->prepare($query); //Prepare query
         $statment->execute(); //Execute query
         $queryResult = $statment->fetch(); //Prepare result for client
@@ -68,8 +69,7 @@ function updateFilmMaker($filmMaker)
 
     try {
         $dbh = getPDO();
-        $query = "UPDATE filmMakers SET " . implode(", ", $fields) . "WHERE id=:id";
-
+        $query = "UPDATE filmMakers SET " . implode(", ", $fields) . " WHERE id=:id";
         $statement = $dbh->prepare($query);//prepare query
         $statement->execute($filmMaker);//execute query
         $queryResult = $statement->fetch();//prepare result for client
@@ -81,5 +81,6 @@ function updateFilmMaker($filmMaker)
     }
 
 }
+
 
 ?>
