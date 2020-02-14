@@ -5,16 +5,17 @@
  * Date : 06.02.2020
  */
 
-function getPDO(){
+function getPDO()
+{
     require ".const.php";
-    return new PDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $pass);
+    return new PDO('mysql:host=' . $dbhost . ';dbname=' . $dbname, $user, $pass);
 }
 
 function getAllItems($table)
 {
     try {
         $dbh = getPDO();
-        $query = 'SELECT * FROM '.$table;
+        $query = 'SELECT * FROM ' . $table;
         $statment = $dbh->prepare($query); //Prepare query
         $statment->execute(); //Execute query
         $queryResult = $statment->fetchAll(); //Prepare result for client
@@ -30,7 +31,6 @@ function getAnItem($table, $id)
 {
     try {
         $dbh = getPDO();
-        $query = 'SELECT * FROM '.$table.' WHERE id = '.$id;
         $statment = $dbh->prepare($query); //Prepare query
         $statment->execute(); //Execute query
         $queryResult = $statment->fetch(); //Prepare result for client
@@ -42,7 +42,7 @@ function getAnItem($table, $id)
     }
 }
 
-function getFilmMakerByName ($name)
+function getFilmMakerByName($name)
 {
     try {
         $dbh = getPDO();
@@ -60,21 +60,22 @@ function getFilmMakerByName ($name)
 
 function updateFilmMaker($filmMaker)
 {
+    foreach (array_keys($filmMaker) as $fieldName) {
+        if ($fieldName != "id") {
+            $fields[] = "$fieldName=:$fieldName";
+        }
+    }
+
     try {
         $dbh = getPDO();
-        $query = "UPDATE filmMakers SET
-                    lastname=:lastname,
-                    firstname=:firstname,
-                    birthname=:birthname,
-                    nationality=:nationality,
-                    filmmakersnumber=:filmmakersnumber
-                    WHERE id=:id";
+        $query = "UPDATE filmMakers SET " . implode(", ", $fields) . "WHERE id=:id";
+
         $statement = $dbh->prepare($query);//prepare query
         $statement->execute($filmMaker);//execute query
         $queryResult = $statement->fetch();//prepare result for client
         $dbh = null;
         return $queryResult;
-    } catch (PDOException $e){
+    } catch (PDOException $e) {
         print "Error!: " . $e->getMessage() . "<br/>";
         return null;
     }
