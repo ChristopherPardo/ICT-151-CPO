@@ -83,4 +83,19 @@ function updateFilmMaker($filmMaker)
 }
 
 
+function deleteFilmMaker($id){
+    try {
+        $dbh = getPDO();
+        $query = "DELETE FROM filmMakers WHERE id = ".$id;
+        $statement = $dbh->prepare($query);//prepare query
+        $statement->execute();//execute query
+        $queryResult = $statement->fetch();//prepare result for client
+        $dbh = null;
+        return $queryResult;
+    } catch (PDOException $e) {
+        print "Error!: " . $e->getMessage() . "<br/>";
+        return null;
+    }
+}
+
 ?>

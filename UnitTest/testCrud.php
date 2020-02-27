@@ -1,11 +1,11 @@
 <?php
-/*
-  Author : Christopher Pardo
+/**
+  Author : Christopher Pardo ...
   Project : 
   Date : 13.02.2020
 */
 
-require_once "../index.php";
+require_once "../crud.php";
 require_once "../.const.php";
 
 $cmd = "mysql -u $user -p$pass < ../Restore-MCU-PO-Final.sql";
@@ -63,4 +63,17 @@ else
     echo '### BUG ###';
 }
 echo "\n";
+
+echo "Test unitaire de la fonction deleteFilMaker : ";
+
+deleteFilmMaker(4);
+
+$item = getAnItem("filmMakers", 4);
+
+if ($item == NULL){
+    echo 'OK !!!';
+}
+else{
+    echo '### BUG ###';
+}
 
