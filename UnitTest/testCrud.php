@@ -77,3 +77,25 @@ else{
     echo '### BUG ###';
 }
 
+echo "\n";
+
+echo "Test unitaire de la fonction CreatFilMaker : ";
+
+$newFilmMaker = [
+  'filmmakersnumber' => 159753,
+  'lastname' => "Meili",
+  'firstname' => "Dmitri",
+  'birthname' => "2000-05-01",
+  'nationality' => "Russie"
+];
+
+createFilmMaker($newFilmMaker);
+
+$resut = getFilmMakerByName("Meili");
+
+if ($newFilmMaker["firstname"] == $resut["firstname"]){
+    echo 'OK !!!';
+}
+else{
+    echo '### BUG ###';
+}
