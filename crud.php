@@ -18,9 +18,9 @@ function getAllItems($table)
 {
     try {
         $dbh = getPDO();
-        $query = 'SELECT * FROM ' . $table;
+        $query = "SELECT * FROM :table";
         $statment = $dbh->prepare($query); //Prepare query
-        $statment->execute(); //Execute query
+        $statment->execute(['table' => $table]); //Execute query
         $queryResult = $statment->fetchAll(); //Prepare result for client
         return $queryResult;
         $dbh = null;
@@ -34,9 +34,9 @@ function getAnItem($table, $id)
 {
     try {
         $dbh = getPDO();
-        $query = 'SELECT * FROM ' . $table . ' WHERE id = ' . $id;
+        $query = 'SELECT * FROM :table WHERE id = :id';
         $statment = $dbh->prepare($query); //Prepare query
-        $statment->execute(); //Execute query
+        $statment->execute(["id" => $id, "table" => $table]); //Execute query
         $queryResult = $statment->fetch(); //Prepare result for client
         return $queryResult;
         $dbh = null;
@@ -50,9 +50,9 @@ function getFilmMakerByName($name)
 {
     try {
         $dbh = getPDO();
-        $query = "SELECT * FROM filmmakers WHERE lastname = '$name'";
+        $query = "SELECT * FROM filmmakers WHERE lastname = :name";
         $statement = $dbh->prepare($query);//prepare query
-        $statement->execute();//execute query
+        $statement->execute(["name" => $name]);//execute query
         $queryResult = $statement->fetch(PDO::FETCH_ASSOC);//prepare result for client
         $dbh = null;
         return $queryResult;
@@ -89,9 +89,9 @@ function updateFilmMaker($filmMaker)
 function deleteFilmMaker($id){
     try {
         $dbh = getPDO();
-        $query = "DELETE FROM filmMakers WHERE id = ".$id;
+        $query = "DELETE FROM filmMakers WHERE id = :id";
         $statement = $dbh->prepare($query);//prepare query
-        $statement->execute();//execute query
+        $statement->execute(["id" => $id]);//execute query
         $queryResult = $statement->fetch();//prepare result for client
         $dbh = null;
         return $queryResult;
