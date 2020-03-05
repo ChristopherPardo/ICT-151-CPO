@@ -18,10 +18,10 @@ function getAllItems($table)
 {
     try {
         $dbh = getPDO();
-        $query = "SELECT * FROM :table";
+        $query = "SELECT * FROM $table";
         $statment = $dbh->prepare($query); //Prepare query
-        $statment->execute(['table' => $table]); //Execute query
-        $queryResult = $statment->fetchAll(); //Prepare result for client
+        $statment->execute(); //Execute query
+        $queryResult = $statment->fetchAll(PDO::FETCH_ASSOC); //Prepare result for client
         return $queryResult;
         $dbh = null;
     } catch (PDOException $e) {
@@ -34,9 +34,9 @@ function getAnItem($table, $id)
 {
     try {
         $dbh = getPDO();
-        $query = 'SELECT * FROM :table WHERE id = :id';
+        $query = "SELECT * FROM $table WHERE id=:id";
         $statment = $dbh->prepare($query); //Prepare query
-        $statment->execute(["id" => $id, "table" => $table]); //Execute query
+        $statment->execute(["id" => $id]); //Execute query
         $queryResult = $statment->fetch(); //Prepare result for client
         return $queryResult;
         $dbh = null;

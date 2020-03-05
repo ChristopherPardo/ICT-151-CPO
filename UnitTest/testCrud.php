@@ -13,7 +13,8 @@ exec($cmd);
 
 
 echo "Test unitaire de la fonction getAllItems : ";
-$items = getAllItems("filmmakers");
+$items = getAllItems("filmmakers inner join make on filmmaker_id = filmmakers.id inner join films on film_id = films.id");
+var_dump($items);
 if (count($items) == 4)
 {
     echo 'OK !!!';
